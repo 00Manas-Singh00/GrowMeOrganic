@@ -26,7 +26,6 @@ const App: React.FC = () => {
   const overlayPanelRef = useRef<any>(null);
   const [selectionCount, setSelectionCount] = useState<number>(0);
 
-  // Fetch artworks data from API
   const fetchArtworks = async (page: number) => {
     try {
       const response = await axios.get(
@@ -43,7 +42,7 @@ const App: React.FC = () => {
         date_end: item.date_end,
       }));
       setArtworks(artworkList);
-      setTotalRecords(data.pagination.total); // Assuming the API returns a total record count
+      setTotalRecords(data.pagination.total);
     } catch (error) {
       console.error("Error fetching artworks:", error);
     }
@@ -53,7 +52,6 @@ const App: React.FC = () => {
     fetchArtworks(page);
   }, [page]);
 
-  // Handle row selection from input number
   const handleRowSelection = async (selectionCount: number) => {
     let totalSelectedRows: Artwork[] = [];
     let currentPage = page;
@@ -65,7 +63,6 @@ const App: React.FC = () => {
       );
       const data = response.data.data;
 
-      // Calculate the number of rows to select on the current page
       const rowsToSelect = Math.min(data.length, remainingToSelect);
       totalSelectedRows = [
         ...totalSelectedRows,
@@ -76,14 +73,13 @@ const App: React.FC = () => {
       currentPage += 1;
 
       if (totalSelectedRows.length >= totalRecords) {
-        break; // Stop if we have selected all rows
+        break;
       }
     }
 
     setSelectedArtworks(totalSelectedRows);
   };
 
-  // Handle selection change from DataTable
   const onSelectionChange = (e: any) => {
     setSelectedArtworks(e.value);
   };
